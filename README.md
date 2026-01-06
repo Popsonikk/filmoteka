@@ -1,2 +1,2 @@
-Repozytorium poświęcone analizie bazy danych "Filmoteka" w ramach kursu posgreSQL
+Repozytorium poświęcone analizie bazy danych "Filmoteka" w ramach kursu posgreSQL 
 
