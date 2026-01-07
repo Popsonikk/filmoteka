@@ -1,0 +1,51 @@
+1. Lista klientów sklepu:
+	SELECT first_name, last_name, email 
+	FROM customer;
+
+2. Lista klientów sklepu posegregowana malejąco względem nazwiska:
+	SELECT first_name, last_name, email 
+	FROM customer 
+	ORDER BY last_name DESC ,first_name DESC;
+
+3. Lista cen filmów dostępnych w sklepie:
+	SELECT DISTINCT amount 
+	FROM payment 
+	ORDER BY amount DESC;
+
+4. Lokalizacje, z których klienci dokonali zakupu:
+	SELECT DISTINCT district 
+	FROM address;
+
+5. Liczba filmów w bazie:
+	SELECT COUNT(*) 
+	FROM film;
+
+6. Liczba transakcji posegregowana po dacie wykonania:
+	SELECT * 
+	FROM rental 
+	ORDER BY rental_date DESC;
+
+7. Sprawdzenie wszystkich transakcji danego klienta:
+	SELECT * 
+	FROM payment 
+	WHERE customer_id=X;
+
+8. Lista wypożyczeń, które nie zostały zwrócone:
+	SELECT * 
+	FROM rental 
+	WHERE return_date IS NULL;
+
+9. Lista płatności o konkretnej wartości:
+	SELECT * 
+	FROM payment 
+	WHERE amount=X;
+
+10. Lista płatności konkretnych klientów, konkretnych kwot:
+	SELECT * 
+	FROM payment 
+	WHERE customer_id IN (X) AND amount BETWEEN X AND X;
+
+11. Lista płatności między konkretnymi datami, konkretne kwoty:
+	SELECT * 
+	FROM payment 
+	WHERE payment_date BETWEEN 'DDDD-MM-DD HH:MM' AND 'DDDD-MM-DD HH:MM' AND amount BETWEEN X AND X;
