@@ -1,6 +1,4 @@
-1. Lista klientów sklepu:
-	SELECT first_name, last_name, email 
-	FROM customer;
+
 
 2. Lista klientów sklepu posegregowana malejąco względem nazwiska:
 	SELECT first_name, last_name, email 
@@ -20,7 +18,7 @@
 	SELECT COUNT(*) 
 	FROM film;
 
-6. Liczba transakcji posegregowana po dacie wykonania:
+6. Lista transakcji posegregowana po dacie wykonania:
 	SELECT * 
 	FROM rental 
 	ORDER BY rental_date DESC;
@@ -49,3 +47,23 @@
 	SELECT * 
 	FROM payment 
 	WHERE payment_date BETWEEN 'DDDD-MM-DD HH:MM' AND 'DDDD-MM-DD HH:MM' AND amount BETWEEN X AND X;
+
+12. Liczba i suma transakcji poszczególnych pracowników sklepu:
+	SELECT COUNT(*), SUM(amount) AS total, staff_id AS Staff 
+	FROM payment 
+	WHERE amount!=0 
+	GROUP BY Staff;
+
+13. Sprzedaż z rozbiciem na pracownika oraz dzień:
+	SELECT DATE(payment_date) AS date, SUM(amount) AS total, staff_id AS Staff 
+	FROM payment 
+	GROUP BY Staff,DATE(payment_date) 
+	ORDER BY total DESC
+
+14. Średnia wartość transakcji klientów z danych dni przy więcej niż jednej transakcji
+	SELECT ROUND(AVG(amount),2) AS average, customer_id AS customer, DATE(payment_date) AS date ,count(*) AS trans 
+	FROM payment  
+	WHERE DATE(payment_date) BETWEEN '2020-04-28' AND '2020-05-01' 
+	GROUP BY customer, date 
+	HAVING count(*)>1 
+	ORDER BY average DESC
