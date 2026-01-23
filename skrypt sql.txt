@@ -1,0 +1,15 @@
+Tabela z ratingiem
+SELECT rating, COUNT(*) FROM film GROUP BY rating ORDER BY COUNT(*)
+
+Tabela rating I kategorii
+SELECT c.name, f.rating, COUNT(*) AS category_count FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+LEFT JOIN film f ON f.film_id = fc.film_id
+GROUP BY c.name, f.rating
+ORDER BY c.name, f.rating;
+
+Tabela kategorii
+SELECT c.name, COUNT(*) AS category_count FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+GROUP BY c.name
+ORDER BY category_count DESC;
