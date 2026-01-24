@@ -13,3 +13,38 @@ SELECT c.name, COUNT(*) AS category_count FROM category c
 LEFT JOIN film_category fc ON fc.category_id = c.category_id
 GROUP BY c.name
 ORDER BY category_count DESC;
+
+Liczba transakcji Klientów
+SELECT CASE 
+	WHEN transactions < 10 THEN '0-10'
+	WHEN transactions < 15 THEN '10-15'
+	WHEN transactions < 20 THEN '15-20'
+	WHEN transactions < 25 THEN '20-25'
+	WHEN transactions < 30 THEN '25-30'
+	WHEN transactions < 35 THEN '30-35'
+	WHEN transactions < 40 THEN '35-40'
+	ELSE '40-X'
+	END AS transaction_range,
+	COUNT(*) AS transaction_number
+	FROM(
+	SELECT customer_id as Customer, COUNT(*) AS transactions FROM payment
+	GROUP BY Customer)
+	GROUP BY transaction_range
+	ORDER BY transaction_range;
+
+
+Suma transakcji Klientów
+SELECT CASE 
+	WHEN total_sum < 75 THEN '0-75'
+	WHEN total_sum < 100 THEN '075-100'
+	WHEN total_sum < 125 THEN '100-125'
+	WHEN total_sum < 150 THEN '125-150'
+	WHEN total_sum < 175 THEN '150-175'
+	ELSE '175-X'
+	END AS sum_range,
+	COUNT(*) AS sum_number
+	FROM(
+	SELECT customer_id as Customer, SUM(amount) AS total_sum FROM payment
+	GROUP BY Customer)
+	GROUP BY sum_range
+	ORDER BY sum_range;
