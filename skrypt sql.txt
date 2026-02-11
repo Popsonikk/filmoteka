@@ -1,20 +1,14 @@
-Tabela z ratingiem
-SELECT rating, COUNT(*) FROM film GROUP BY rating ORDER BY COUNT(*)
+1. Liczba Klientów
+SELECT COUNT(*) FROM customer;
 
-Tabela rating I kategorii
-SELECT c.name, f.rating, COUNT(*) AS category_count FROM category c 
-LEFT JOIN film_category fc ON fc.category_id = c.category_id
-LEFT JOIN film f ON f.film_id = fc.film_id
-GROUP BY c.name, f.rating
-ORDER BY c.name, f.rating;
+2. Lokalizacja klientów
+SELECT COUNT(*) AS number_of_clients, co.country FROM customer cu LEFT JOIN address ad ON cu.address_id=ad.address_id
+LEFT JOIN city ci ON ci.city_id=ad.city_id
+LEFT JOIN country co ON co.country_id=ci.country_id
+GROUP BY co.country
+ORDER BY number_of_clients DESC;
 
-Tabela kategorii
-SELECT c.name, COUNT(*) AS category_count FROM category c 
-LEFT JOIN film_category fc ON fc.category_id = c.category_id
-GROUP BY c.name
-ORDER BY category_count DESC;
-
-Liczba transakcji Klientów
+3. Liczba transakcji Klientów
 SELECT CASE 
 	WHEN transactions < 10 THEN '0-10'
 	WHEN transactions < 15 THEN '10-15'
@@ -31,6 +25,30 @@ SELECT CASE
 	GROUP BY Customer)
 	GROUP BY transaction_range
 	ORDER BY transaction_range;
+
+4.Średnia liczba transakcji na pojedynczego klienta
+SELECT  AVG(transactions) FROM
+(SELECT customer_id as Customer, COUNT(*) AS transactions FROM payment
+	GROUP BY Customer
+	order by transactions desc)
+
+Tabela z ratingiem
+SELECT rating, COUNT(*) FROM film GROUP BY rating ORDER BY COUNT(*)
+
+Tabela rating I kategorii
+SELECT c.name, f.rating, COUNT(*) AS category_count FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+LEFT JOIN film f ON f.film_id = fc.film_id
+GROUP BY c.name, f.rating
+ORDER BY c.name, f.rating;
+
+Tabela kategorii
+SELECT c.name, COUNT(*) AS category_count FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+GROUP BY c.name
+ORDER BY category_count DESC;
+
+
 
 
 Suma transakcji Klientów
@@ -68,3 +86,8 @@ LEFT JOIN inventory i ON i.inventory_id=r.inventory_id
 LEFT JOIN film f ON i.film_id=f.film_id
 GROUP BY f.rating
 ORDER BY number_of_rental DESC
+
+
+Miesięczny przychód
+SELECT SUM(amount) AS income, EXTRACT(MONTH FROM payment_date) AS sale_month from payment 
+GROUP BY sale_month ORDER BY sale_month LIMIT 4
