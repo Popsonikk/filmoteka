@@ -26,27 +26,45 @@ SELECT CASE
 	GROUP BY transaction_range
 	ORDER BY transaction_range;
 
-4.Średnia liczba transakcji na pojedynczego klienta
+4. Średnia liczba transakcji na pojedynczego klienta
 SELECT  AVG(transactions) FROM
 (SELECT customer_id as Customer, COUNT(*) AS transactions FROM payment
 	GROUP BY Customer
 	order by transactions desc)
 
-Tabela z ratingiem
+5. Tabela z ratingiem
 SELECT rating, COUNT(*) FROM film GROUP BY rating ORDER BY COUNT(*)
 
-Tabela rating I kategorii
+6. Tabela kategorii
+SELECT c.name, COUNT(*) AS category_count FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+GROUP BY c.name
+ORDER BY category_count DESC;
+
+7. Tabela rating I kategorii
 SELECT c.name, f.rating, COUNT(*) AS category_count FROM category c 
 LEFT JOIN film_category fc ON fc.category_id = c.category_id
 LEFT JOIN film f ON f.film_id = fc.film_id
 GROUP BY c.name, f.rating
 ORDER BY c.name, f.rating;
 
-Tabela kategorii
-SELECT c.name, COUNT(*) AS category_count FROM category c 
+8. Stan magazynowy Filmów
+SELECT COUNT(i.film_id) AS film_stock, f.title  AS title FROM inventory i 
+LEFT JOIN film f ON i.film_id=f.film_id
+GROUP BY title
+ORDER BY film_stock DESC
+
+9. Tabela rating I kategorii update o stan magazynowy
+SELECT c.name, f.rating, COUNT(*) AS category_count FROM category c 
 LEFT JOIN film_category fc ON fc.category_id = c.category_id
-GROUP BY c.name
-ORDER BY category_count DESC;
+LEFT JOIN film f ON f.film_id = fc.film_id
+INNER JOIN 
+(SELECT COUNT(i.film_id) AS film_stock, i.film_id AS title FROM inventory i 
+LEFT JOIN film f ON i.film_id=f.film_id
+GROUP BY i.film_id
+ORDER BY film_stock DESC) s ON f.film_id=s.title
+GROUP BY c.name, f.rating
+ORDER BY c.name, f.rating;
 
 
 
