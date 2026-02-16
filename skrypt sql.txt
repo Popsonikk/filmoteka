@@ -66,6 +66,19 @@ ORDER BY film_stock DESC) s ON f.film_id=s.title
 GROUP BY c.name, f.rating
 ORDER BY c.name, f.rating;
 
+10. Liczba kopii danych filmów
+SELECT film_stock, COUNT(film_stock) number_of_film_stock FROM(
+SELECT COUNT(i.film_id) AS film_stock, f.title  AS title FROM inventory i 
+LEFT JOIN film f ON i.film_id=f.film_id
+GROUP BY title)
+GROUP BY film_stock
+ORDER BY film_stock;
+
+11. Liczba wypożyczeń na kopię
+SELECT film_id AS film, COUNT(film_id) number_of_rental  
+FROM rental r LEFT JOIN inventory i ON i.inventory_id=r.inventory_id
+GROUP BY film
+ORDER BY number_of_rental DESC
 
 
 
