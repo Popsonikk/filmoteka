@@ -80,6 +80,21 @@ FROM rental r LEFT JOIN inventory i ON i.inventory_id=r.inventory_id
 GROUP BY film
 ORDER BY number_of_rental DESC
 
+12 Koszty wypożyczeń I kupna filmów
+SELECT DISTINCT f.film_id AS fid, f.title  AS title, f.rental_rate AS rental_cost, f.replacement_cost AS buy_cost,
+ROUND(f.replacement_cost/f.rental_rate,2)  AS rental_ratio
+FROM inventory i 
+LEFT JOIN film f ON i.film_id=f.film_id
+
+13. Rating I kategoria konkretnych filmów
+SELECT c.name AS category, f.rating, f.film_id AS film FROM category c 
+LEFT JOIN film_category fc ON fc.category_id = c.category_id
+LEFT JOIN film f ON f.film_id = fc.film_id
+INNER JOIN (SELECT DISTINCT i.film_id AS film FROM inventory i LEFT JOIN film f ON i.film_id=f.film_id) inj
+ON inj.film=f.film_id
+
+
+
 
 
 Suma transakcji Klientów
